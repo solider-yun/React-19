@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 const AppleStyle = {
     height:50,
     width:50,
@@ -14,11 +16,17 @@ const TextStyle:React.CSSProperties = {
     textAlign:'center',
     userSelect:'none'
 }
+//25씩 더해야함
+export const Apple = ({text, ...rest}:{text:number}) => {
 
-export const Apple = ({text,key, ...rest}:{text:number,key:string}) => {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        console.log(`locate X= ${ref.current?.offsetLeft}, Y= ${ref.current?.offsetTop}`)
+    },[ref])
 
 
-    return <div style={AppleStyle} key={key} {...rest}>
+    return <div ref={ref} style={AppleStyle} {...rest}>
         <div style={TextStyle}>{text}</div>
     </div>
 }
