@@ -38,16 +38,18 @@ export const Apple = ({text,id, show, ...rest}:{text:number,id:string,show:boole
     const isHovered = topX < dragX && topY < dragY && elementRight > startX && elementBottom > startY
 
     useEffect(() => {
+        if(show){
         if(isHovered){
             countDispatch({type:ActionType.ADD_ITEM,payload:{item:text,id}})
         }else{
             countDispatch({type:ActionType.DEL_ITEM,payload:{item:text,id}})
-        }
+        }}
     },[isHovered])
 
 
     return (
       <div ref={ref} style={{...AppleStyle,opacity: show ? 1 : 0, backgroundColor:isHovered ? 'orange' : 'red'}} {...rest}>
         <div style={TextStyle}>{text}</div>
-    </div>)
+    </div>
+    )
 }

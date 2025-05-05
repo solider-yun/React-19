@@ -4,13 +4,18 @@ import { CounterContext, CounterDispatchContext, ActionType, countReducer, Locat
 
 function getWeightedRandom() {
   const weighted = [
-    1, 1, 1, 2,     // 1 더 많이 등장
-    2, 2, 2, 3,     // 2 더 많이 등장
-    3, 3, 3, 4,     // 3 더 많이 등장
-    4, 5, 6, 7, 8, 9  // 나머지 숫자
+    1, 1, 1, 2,     
+    2, 2, 2, 3,     
+    3, 3, 3, 4,     
+    4, 5, 6, 7, 8, 9  
   ];
   const index = Math.floor(Math.random() * weighted.length);
   return weighted[index];
+}
+const BodyContainer:React.CSSProperties = {
+  width:'100vw',
+  height:'100vh',
+  backgroundColor:'#FFF5A5'
 }
 
 const Container:React.CSSProperties = {
@@ -42,7 +47,6 @@ function App() {
   const [getXY,setGetXY] = useState({startX:0,startY:0,dragX:0,dragY:0})
   const [removeItem,setRemoveItem] = useState<string[]>([]);
   const [counter, dispatch] = useReducer(countReducer,{mouseDown:false, sum:0,id:[]})
-
 
   const startX = getXY?.startX ?? 0;
   const startY = getXY?.startY ?? 0;
@@ -85,6 +89,7 @@ useEffect(() => {
 },[MouseDownEventHandler,MouseDragEventHandler,MouseUpEventHandler])
   
   return (
+    <div style={BodyContainer}>
     <CounterContext.Provider value={counter}>
       <CounterDispatchContext.Provider value={dispatch}>
         <LocateContext.Provider value={getXY}>
@@ -106,6 +111,7 @@ useEffect(() => {
         </LocateContext.Provider>
       </CounterDispatchContext.Provider>
     </CounterContext.Provider>
+    </div>
   )
 }
 
