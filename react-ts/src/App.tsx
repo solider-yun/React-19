@@ -1,6 +1,6 @@
-import { createContext, useEffect, useState } from "react"
+import { useActionState, useContext, useEffect, useReducer, useState } from "react"
 import { Apple } from "./components/Apple";
-import { LocateContext, MouseSumContext } from "./context/locateContext";
+import { CounterContext, CounterDispatchContext, ActionType, countReducer, LocateContext } from "./context/locateContext";
 
 function getWeightedRandom() {
   const weighted = [
@@ -40,8 +40,9 @@ const itemInit =  Array.from({ length: 16 }, () =>
 
 function App() {
   const [getXY,setGetXY] = useState({startX:0,startY:0,dragX:0,dragY:0})
-  const [cursor,setCursor] = useState<boolean>(false);
-  const [isSum,setIsSum] = useState(0);
+  const [removeItem,setRemoveItem] = useState<string[]>([]);
+  const [counter, dispatch] = useReducer(countReducer,{mouseDown:false, sum:0,id:[]})
+
 
   const startX = getXY?.startX ?? 0;
   const startY = getXY?.startY ?? 0;
@@ -49,10 +50,10 @@ function App() {
   const dragY = getXY?.dragY ?? 0;
 
   const widthCul = (dragX !== 0) && dragX > startX ? Math.abs(startX - dragX) : 0
-  const heightCul = dragY !== 0 && dragY > startY ?Math.abs(startY - dragY) : 0
+  const heightCul = (dragY !== 0) && dragY > startY ?Math.abs(startY - dragY) : 0
 
   const MouseDownEventHandler = (ev: MouseEvent) => {
-    setCursor(true);
+    dispatch({type:ActionType.MOUSE_DOWN})
     setGetXY({...getXY,startX:ev.pageX,startY:ev.pageY,})
   }
 
@@ -63,12 +64,11 @@ function App() {
   }
 
   const MouseUpEventHandler = () => {
-    setCursor(false);
+    dispatch({type:ActionType.MOUSE_UP})
     setGetXY({startX:0,startY:0,dragX:0,dragY:0});
-  }
-
-  const isHoverSum = (point:number) => {
-    setIsSum(isSum + point)
+    if(counter.sum === 10){
+      setRemoveItem([...removeItem,...counter.id])
+    }
   }
 
 
@@ -85,11 +85,15 @@ useEffect(() => {
 },[MouseDownEventHandler,MouseDragEventHandler,MouseUpEventHandler])
   
   return (
-    <MouseSumContext.Provider value={{mouseDown:cursor,sum:isSum}}>
-      <LocateContext.Provider value={getXY}>
+    <CounterContext.Provider value={counter}>
+      <CounterDispatchContext.Provider value={dispatch}>
+        <LocateContext.Provider value={getXY}>
         <div style={Container}>
-            {itemInit.map((r) => {
-              return r.map((c,ci) => <Apple key={`${r}_${ci}`} text={c} sumFunc={isHoverSum}/>) 
+            {itemInit.map((r,ri) => {
+              return r.map((c,ci) => {
+                const isShow = !removeItem.includes(`${ri}_${ci}`)
+              return <Apple key={`${ri}_${ci}`} id={`${ri}_${ci}`} show={isShow} text={c}/>
+            }) 
             })}
             <div style={{...BoxCss,
             left:startX,
@@ -99,8 +103,9 @@ useEffect(() => {
             }}>
             </div>
         </div>
-      </LocateContext.Provider>
-    </MouseSumContext.Provider>
+        </LocateContext.Provider>
+      </CounterDispatchContext.Provider>
+    </CounterContext.Provider>
   )
 }
 

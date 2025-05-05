@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { LocateContext, MouseSumContext } from "../context/locateContext";
+import { ActionType, LocateContext, useCounterDispatch, useCountState } from "../context/locateContext";
 
 const AppleStyle = {
     height:38,
@@ -18,38 +18,36 @@ const TextStyle:React.CSSProperties = {
     textAlign:'center',
     userSelect:'none',
 }
-//25씩 더해야함
-export const Apple = ({text,sumFunc, ...rest}:{text:number,sumFunc:(x:number) => void}) => {
+
+export const Apple = ({text,id, show, ...rest}:{text:number,id:string,show:boolean}) => {
     const ref = useRef<HTMLDivElement>(null);
-    const [show,setShow] = useState(true);
-    const [isHover, setIsHover] = useState(false);
-    const mouseSum = useContext(MouseSumContext)
+    // const [show,setShow] = useState(true);
+    const [selected,setSelected] = useState(false);
+    const locatContext = useContext(LocateContext);
+    const countState = useCountState();
+    const countDispatch = useCounterDispatch();
+
+    const topX = ref.current?.offsetLeft ?? 0
+    const topY = ref.current?.offsetTop ?? 0
+    const elementRight = topX + 38
+    const elementBottom = topY + 38
+    const startX = locatContext?.startX ?? 0
+    const startY = locatContext?.startY ?? 0
+    const dragX = locatContext?.dragX ?? 0
+    const dragY = locatContext?.dragY ?? 0
+    const isHovered = topX < dragX && topY < dragY && elementRight > startX && elementBottom > startY
 
     useEffect(() => {
-        if(!mouseSum?.mouseDown && isHover){
-            sumFunc(text);
+        if(isHovered){
+            countDispatch({type:ActionType.ADD_ITEM,payload:{item:text,id}})
+        }else{
+            countDispatch({type:ActionType.DEL_ITEM,payload:{item:text,id}})
         }
-    },[mouseSum?.mouseDown,isHover])
+    },[isHovered])
+
 
     return (
-       <LocateContext.Consumer>{(contextValue) => {
-        const topX = ref.current?.offsetLeft ?? 0
-        const topY = ref.current?.offsetTop ?? 0
-        const elementRight = topX + 38
-        const elementBottom = topY + 38
-        const startX = contextValue?.startX ?? 0
-        const startY = contextValue?.startY ?? 0
-        const dragX = contextValue?.dragX ?? 0
-        const dragY = contextValue?.dragY ?? 0
-        
-        if(mouseSum?.mouseDown && topX < dragX && topY < dragY && elementRight > startX && elementBottom > startY){
-            setIsHover(true);
-        }else{
-            setIsHover(false);
-        }
-           
-       return <div ref={ref} style={{...AppleStyle,opacity: show ? 1 : 0, backgroundColor:isHover ? 'orange' : 'red'}} {...rest}>
+      <div ref={ref} style={{...AppleStyle,opacity: show ? 1 : 0, backgroundColor:isHovered ? 'orange' : 'red'}} {...rest}>
         <div style={TextStyle}>{text}</div>
-    </div>}}
-    </LocateContext.Consumer>)
+    </div>)
 }
