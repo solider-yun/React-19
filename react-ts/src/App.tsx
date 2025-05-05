@@ -33,7 +33,7 @@ const BoxCss:React.CSSProperties = {
   position:'absolute',
   width:'10px',
   height:'10px',
-  border:'2px solid grey',
+  border:'2px solid blue',
   transformOrigin:'left top',
   opacity:0.6
 }

@@ -1,5 +1,5 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { ActionType, LocateContext, useCounterDispatch, useCountState } from "../context/locateContext";
+import { useContext, useEffect, useRef } from "react";
+import { ActionType, LocateContext, useCounterDispatch } from "../context/locateContext";
 import appleImg from '../../assets/Apple.png'
 import orangeImg from '../../assets/Orange.png'
 
@@ -10,13 +10,15 @@ const AppleStyle = {
     borderRadius:20,
     color: "white",
     backgroundPosition:'center',
+    backgroundSize:'37px 37px',
     transition: 'opacity 0.2s ease-in-out',
   };
 
 const TextStyle:React.CSSProperties = {
-    width:'100%',
-    height:'100%',
-    fontSize:25,
+    width:'30px',
+    height:'30px',
+    padding:'4px',
+    fontSize:22,
     fontWeight:700,
     textAlign:'center',
     userSelect:'none',
@@ -24,10 +26,7 @@ const TextStyle:React.CSSProperties = {
 
 export const Apple = ({text,id, show, ...rest}:{text:number,id:string,show:boolean}) => {
     const ref = useRef<HTMLDivElement>(null);
-    // const [show,setShow] = useState(true);
-    const [selected,setSelected] = useState(false);
     const locatContext = useContext(LocateContext);
-    const countState = useCountState();
     const countDispatch = useCounterDispatch();
 
     const topX = ref.current?.offsetLeft ?? 0
