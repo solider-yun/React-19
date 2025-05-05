@@ -1,5 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { ActionType, LocateContext, useCounterDispatch, useCountState } from "../context/locateContext";
+import appleImg from '../../assets/Apple.png'
+import orangeImg from '../../assets/Orange.png'
 
 const AppleStyle = {
     height:38,
@@ -7,6 +9,7 @@ const AppleStyle = {
     margin:'5px',
     borderRadius:20,
     color: "white",
+    backgroundPosition:'center',
     transition: 'opacity 0.2s ease-in-out',
   };
 
@@ -48,7 +51,7 @@ export const Apple = ({text,id, show, ...rest}:{text:number,id:string,show:boole
 
 
     return (
-      <div ref={ref} style={{...AppleStyle,opacity: show ? 1 : 0, backgroundColor:isHovered ? 'orange' : 'red'}} {...rest}>
+      <div ref={ref} style={{...AppleStyle,opacity: show ? 1 : 0, backgroundImage:isHovered ? `url(${orangeImg})` : `url(${appleImg})`}} {...rest}>
         <div style={TextStyle}>{text}</div>
     </div>
     )
