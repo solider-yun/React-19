@@ -16,9 +16,7 @@ export const useCounterDispatch = () => {
 };
 
 export const useResizeObserver = (): [ResizeObserver, MediaSizeType] => {
-  const state = useContext(MediaContext);
   let deviceWidth = null;
-  if (!state) throw new Error("MediaContext NotFound");
   const resizeObj = new ResizeObserver((entries) => {
     for (const entry of entries) {
       if (entry.devicePixelContentBoxSize) {
