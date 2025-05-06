@@ -1,9 +1,11 @@
 import { useContext, useEffect, useRef } from "react";
-import { ActionType, LocateContext, useCounterDispatch } from "../context/locateContext";
+import {  LocateContext } from "../context";
 import appleImg from '../../assets/Apple.png'
 import orangeImg from '../../assets/Orange.png'
+import { useCounterDispatch } from "../hook/useHook";
+import { ActionType } from "../context/type";
 
-const AppleStyle = {
+const AppleStyleCSS = {
     height:38,
     width:38,
     margin:'5px',
@@ -14,7 +16,7 @@ const AppleStyle = {
     transition: 'opacity 0.2s ease-in-out',
   };
 
-const TextStyle:React.CSSProperties = {
+const TextStyleCSS:React.CSSProperties = {
     width:'30px',
     height:'30px',
     padding:'4px',
@@ -38,6 +40,9 @@ export const Apple = ({text,id, show, ...rest}:{text:number,id:string,show:boole
     const dragX = locatContext?.dragX ?? 0
     const dragY = locatContext?.dragY ?? 0
     const isHovered = topX < dragX && topY < dragY && elementRight > startX && elementBottom > startY
+    const itemBgImg = isHovered ? `url(${orangeImg})` : `url(${appleImg})`;
+    const showOp = show ? 1 : 0
+    const appleCssObj = {...AppleStyleCSS,opacity: showOp , backgroundImage:itemBgImg}
 
     useEffect(() => {
         if(show){
@@ -50,8 +55,8 @@ export const Apple = ({text,id, show, ...rest}:{text:number,id:string,show:boole
 
 
     return (
-      <div ref={ref} style={{...AppleStyle,opacity: show ? 1 : 0, backgroundImage:isHovered ? `url(${orangeImg})` : `url(${appleImg})`}} {...rest}>
-        <div style={TextStyle}>{text}</div>
+      <div ref={ref} style={appleCssObj} {...rest}>
+        <div style={TextStyleCSS}>{text}</div>
     </div>
     )
 }
