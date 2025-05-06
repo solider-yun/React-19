@@ -1,9 +1,9 @@
 import { useContext, useEffect, useRef } from "react";
-import {  LocateContext } from "../context";
 import appleImg from '../../assets/Apple.png'
 import orangeImg from '../../assets/Orange.png'
 import { useCounterDispatch } from "../hook/useHook";
 import { ActionType } from "../context/type";
+import { LocateContext } from "../context/gameContext";
 
 const AppleStyleCSS = {
     height:38,

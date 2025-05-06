@@ -1,5 +1,6 @@
 import { useContext } from "react";
-import { CounterContext, CounterDispatchContext } from "../context";
+import { CounterContext, CounterDispatchContext } from "../context/gameContext";
+
 
 export const useCounterState = () => {
     const state = useContext(CounterContext);

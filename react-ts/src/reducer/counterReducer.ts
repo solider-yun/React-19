@@ -1,9 +1,4 @@
-import { createContext, Dispatch } from "react";
-import { Action, ActionType, CounterType } from "./type";
-
-export const LocateContext = createContext<{startX:number,startY:number,dragX:number,dragY:number} | null>(null);
-export const CounterContext = createContext<CounterType|null>(null)
-export const CounterDispatchContext = createContext<Dispatch<Action> | null>(null)
+import { Action, ActionType, CounterType } from "../context/type"
 
 export const counterReducer = (counter:CounterType,action:Action):CounterType => {
     switch(action.type){
@@ -32,4 +27,3 @@ export const counterReducer = (counter:CounterType,action:Action):CounterType =>
         return counter
     }
 }
-
