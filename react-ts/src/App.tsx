@@ -1,13 +1,19 @@
-import { BrowserRouter } from "react-router"
-import Router from "./router/router"
+import { BrowserRouter } from "react-router";
+import Router from "./router/router";
+import { useEffect, useState } from "react";
+import { MediaContext, MediaSizeType } from "./context/mediaContext";
+import { MediaSize } from "./util/mediaSize";
+import _debounce from "./util/debounce";
 
 function App() {
- 
-  return (
-   <BrowserRouter>
-      <Router/>
-   </BrowserRouter>
-  )
-}
+  const [media, setMedia] = useState<MediaSizeType>(null);
 
-export default App
+  return (
+    <MediaContext.Provider value={media}>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
+    </MediaContext.Provider>
+  );
+}
+export default App;

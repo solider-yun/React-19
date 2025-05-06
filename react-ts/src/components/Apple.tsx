@@ -53,7 +53,6 @@ export const Apple = ({text,id, show, ...rest}:{text:number,id:string,show:boole
         }}
     },[isHovered])
 
-
     return (
       <div ref={ref} style={appleCssObj} {...rest}>
         <div style={TextStyleCSS}>{text}</div>
