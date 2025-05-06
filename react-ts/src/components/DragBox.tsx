@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import {
   Action,
   ActionType,
@@ -6,6 +6,7 @@ import {
   CounterType,
 } from "../context/type";
 import React from "react";
+import { throttle } from "lodash";
 
 const DragBoxCSS: React.CSSProperties = {
   position: "absolute",
@@ -47,27 +48,27 @@ const DragBox: React.FC<DragBoxProps> = (props) => {
 
   const MouseDownEventHandler = (ev: MouseEvent) => {
     counterRe.dispatch({ type: ActionType.RESET });
-    coordinateSt.setState({
-      ...coordinateSt.value,
+    coordinateSt.setState((prev) => ({
+      ...prev,
       startX: ev.pageX,
       startY: ev.pageY,
-    });
+    }));
   };
 
   const MouseDragEventHandler = (ev: MouseEvent) => {
     if (startX && startX !== 0 && startY && startY !== 0) {
-      coordinateSt.setState({
-        ...coordinateSt.value,
+      coordinateSt.setState((prev) => ({
+        ...prev,
         dragX: ev.pageX,
         dragY: ev.pageY,
-      });
+      }));
     }
   };
 
   const MouseUpEventHandler = () => {
     coordinateSt.setState({ startX: 0, startY: 0, dragX: 0, dragY: 0 });
     if (counterRe.value.sum === 10) {
-      removeSt.setState([...removeSt.value, ...counterRe.value.id]);
+      removeSt.setState((prev) => [...prev, ...counterRe.value.id]);
     }
   };
 

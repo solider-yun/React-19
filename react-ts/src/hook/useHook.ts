@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { CounterContext, CounterDispatchContext } from "../context/gameContext";
-import { MediaContext, MediaSizeType } from "../context/mediaContext";
+import { MediaSizeType } from "../context/mediaContext";
 import { ScreenSize } from "../util/screenSize";
 
 export const useCounterState = () => {

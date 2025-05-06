@@ -2,7 +2,6 @@ import { BrowserRouter } from "react-router";
 import Router from "./router/router";
 import { useEffect, useRef } from "react";
 import { MediaContext } from "./context/mediaContext";
-import _debounce from "./util/debounce";
 import { useResizeObserver } from "./hook/useHook";
 
 function App() {
