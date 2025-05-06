@@ -30,7 +30,6 @@ function Game() {
   const removeSt = {value:removeItem, setState:setRemoveItem}
   const coordinateSt = {value:coordinate,setState:setCoordinate}
 
-
   return (
     <div style={BodyContainerCSS}>
       <CounterContext.Provider value={counter}>
