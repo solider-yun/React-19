@@ -10,6 +10,7 @@ import {
   LocateContext,
 } from "../context/gameContext";
 
+//style 속성은 export 금지
 const BodyContainerCSS: React.CSSProperties = {
   width: "100vw",
   height: "100vh",

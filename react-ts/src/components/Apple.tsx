@@ -1,9 +1,8 @@
 import { useContext, useEffect, useRef } from "react";
-import appleImg from "../../assets/Apple.png";
-import orangeImg from "../../assets/Orange.png";
 import { useCounterDispatch } from "../hook/useCounterHook";
 import { ActionType } from "../context/type";
 import { LocateContext } from "../context/gameContext";
+import { AppleImg, OrangeImg } from "../assets";
 
 const AppleStyleCSS = {
   height: 38,
@@ -53,7 +52,7 @@ export const Apple = ({
     topY < dragY &&
     elementRight > startX &&
     elementBottom > startY;
-  const itemBgImg = isHovered ? `url(${orangeImg})` : `url(${appleImg})`;
+  const itemBgImg = isHovered ? `url(${OrangeImg})` : `url(${AppleImg})`;
   const showOp = show ? 1 : 0;
   const appleCssObj = {
     ...AppleStyleCSS,
