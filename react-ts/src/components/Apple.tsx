@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef } from "react";
 import appleImg from "../../assets/Apple.png";
 import orangeImg from "../../assets/Orange.png";
-import { useCounterDispatch } from "../hook/useHook";
+import { useCounterDispatch } from "../hook/useCounterHook";
 import { ActionType } from "../context/type";
 import { LocateContext } from "../context/gameContext";
 

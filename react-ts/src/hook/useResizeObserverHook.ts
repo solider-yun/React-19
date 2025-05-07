@@ -1,19 +1,6 @@
-import React, { RefObject, useContext, useEffect, useState } from "react";
-import { CounterContext, CounterDispatchContext } from "../context/gameContext";
-import { MediaContext, MediaSizeType } from "../context/mediaContext";
+import { RefObject, useState, useEffect } from "react";
+import { MediaSizeType } from "../context/mediaContext";
 import { ScreenSize } from "../util/screenSize";
-
-export const useCounterState = () => {
-  const state = useContext(CounterContext);
-  if (!state) throw new Error("CounterContext NotFound");
-  return state;
-};
-
-export const useCounterDispatch = () => {
-  const dispatch = useContext(CounterDispatchContext);
-  if (!dispatch) throw new Error("CounterDispatch NotFound");
-  return dispatch;
-};
 
 type MediaSize = {
   width: number | null;
