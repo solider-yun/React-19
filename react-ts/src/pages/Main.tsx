@@ -1,7 +1,4 @@
-import { useContext, useState } from "react";
-import { AppleImg } from "../assets";
-import { MediaContext } from "../context/mediaContext";
-import getRandomPosition from "../util/randomPosition";
+import { useState } from "react";
 import Meteor from "../components/Meteor";
 
 const ContainerCSS: React.CSSProperties = {
