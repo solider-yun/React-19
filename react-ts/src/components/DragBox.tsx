@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import {
   Action,
   ActionType,
@@ -6,8 +6,6 @@ import {
   CounterType,
 } from "../context/type";
 import React from "react";
-import { throttle } from "lodash";
-
 const DragBoxCSS: React.CSSProperties = {
   position: "absolute",
   width: "10px",
