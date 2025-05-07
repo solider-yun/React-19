@@ -1,22 +1,15 @@
 import { BrowserRouter } from "react-router";
 import Router from "./router/router";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { MediaContext } from "./context/mediaContext";
 import { useResizeObserver } from "./hook/useHook";
 
 function App() {
   const ref = useRef<HTMLDivElement>(null);
-  const [resizeObj, deviceWidth] = useResizeObserver();
-
-  useEffect(() => {
-    if (ref.current) {
-      resizeObj.observe(ref.current);
-    }
-    return () => resizeObj.disconnect();
-  }, [resizeObj, ref]);
+  const { type } = useResizeObserver<HTMLDivElement>({ ref });
 
   return (
-    <MediaContext.Provider value={deviceWidth}>
+    <MediaContext.Provider value={type}>
       <div ref={ref}>
         <BrowserRouter>
           <Router />
