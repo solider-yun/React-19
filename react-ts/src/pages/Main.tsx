@@ -1,5 +1,6 @@
 import { useState } from "react";
-import Meteor from "../components/Meteor";
+import Meteor from "../components/MeteorSky";
+import Ground from "../components/Ground";
 
 const ContainerCSS: React.CSSProperties = {
   width: "100vw",
@@ -13,10 +14,13 @@ const Main = () => {
   };
 
   return (
-    <div style={ContainerCSS}>
+    <>
+      <div style={ContainerCSS}>
+        <button onClick={handleRun}>run</button>
+      </div>
       <Meteor trigger={run} />
-      <button onClick={handleRun}>run</button>
-    </div>
+      <Ground trigger={run} />
+    </>
   );
 };
 

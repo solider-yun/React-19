@@ -1,9 +1,8 @@
 export type RandomPosition = { x: number; y: number };
 
-function getRandomPosition(count: number = 40): RandomPosition[] {
-  const max = 1500;
+function getRandomPosition(count: number = 30): RandomPosition[] {
+  const max = 2000;
   const min = 250;
-
   const getRandomCoord = () =>
     Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -18,5 +17,9 @@ function getRandomPosition(count: number = 40): RandomPosition[] {
 
   return points;
 }
+
+// export function useRandomPosition(count: number = 30): RandomPosition[] {
+//   return useMemo(() => getRandomPosition(count), [count]);
+// }
 
 export default getRandomPosition;

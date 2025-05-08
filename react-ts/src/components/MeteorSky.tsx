@@ -1,27 +1,41 @@
-import { useEffect, useState } from "react";
-import { AppleImg } from "../assets";
+import { useEffect, useMemo, useState } from "react";
+import { MeteorApple } from "../assets";
 import getRandomPosition from "../util/randomPosition";
 
 const ContainerCSS: React.CSSProperties = {
+  position: "fixed",
   width: "100vw",
-  height: "100vh",
+  height: "100vw",
+  top: 0,
+  left: 0,
+  zIndex: -1,
+};
+
+const NightSkyCSS = {
+  zIndex: -2,
+  width: "100vw",
+  height: "70%",
+  background:
+    "linear-gradient(180deg,rgba(9, 9, 121, 1) 0%, rgba(0, 212, 255, 0) 100%)",
+  transition: "all 0.3s",
 };
 
 const MeteorBallCSS: React.CSSProperties = {
   display: "block",
   position: "fixed",
-  zIndex: 99,
-  width: "30px",
-  height: "30px",
-  backgroundImage: `url(${AppleImg})`,
-  backgroundSize: "30px 30px",
+  zIndex: -3,
+  width: "90px",
+  height: "90px",
+  backgroundImage: `url(${MeteorApple})`,
+  backgroundSize: "90px 90px",
   backgroundPosition: "center",
   transform: "rotate(30deg)",
 };
 
-const Meteor = (param: { trigger: boolean }) => {
+const MeteorSky = (param: { trigger: boolean }) => {
   const { trigger } = param;
   const [run, setRun] = useState<boolean | null>(null);
+  //useMemo로 getRandomPosition을 캐싱할 경우 랜덤값이 이상한 값으로 고정된다
   const points = getRandomPosition();
 
   useEffect(() => {
@@ -31,20 +45,21 @@ const Meteor = (param: { trigger: boolean }) => {
       setRun(true);
       const timeOutId = setTimeout(() => {
         setRun(false);
-      }, 5000);
+      }, 3500);
       return () => clearTimeout(timeOutId);
     }
   }, [trigger, setRun]);
 
   return (
     <div style={ContainerCSS}>
+      <div style={{ ...NightSkyCSS, opacity: run ? 1 : 0 }}></div>
       {points.map((v, idx) => {
         return (
           <div
             key={idx}
             style={{
               ...MeteorBallCSS,
-              transition: run ? "all 5s" : "none",
+              transition: run ? "all 6s" : "none",
               top: run ? `calc(100% + ${v.x}px)` : `-${v.x}px`,
               right: run ? `calc(100% + ${v.y}px)` : `-${v.y}px`,
             }}
@@ -55,4 +70,4 @@ const Meteor = (param: { trigger: boolean }) => {
   );
 };
 
-export default Meteor;
+export default MeteorSky;
