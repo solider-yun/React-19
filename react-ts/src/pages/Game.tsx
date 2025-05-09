@@ -9,12 +9,7 @@ import {
   CounterDispatchContext,
   LocateContext,
 } from "../context/gameContext";
-
-//style 속성은 export 금지
-const BodyContainerCSS: React.CSSProperties = {
-  width: "100vw",
-  height: "100vh",
-};
+import Container from "../components/Container";
 
 const ContainerCSS: React.CSSProperties = {
   display: "flex",
@@ -49,7 +44,7 @@ function Game() {
   const coordinateSt = { value: coordinate, setState: setCoordinate };
 
   return (
-    <div style={BodyContainerCSS}>
+    <Container trigger={false}>
       <CounterContext.Provider value={counter}>
         <CounterDispatchContext.Provider value={dispatch}>
           <LocateContext.Provider value={coordinate}>
@@ -76,7 +71,7 @@ function Game() {
           </LocateContext.Provider>
         </CounterDispatchContext.Provider>
       </CounterContext.Provider>
-    </div>
+    </Container>
   );
 }
 

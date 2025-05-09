@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { MeteorApple } from "../assets";
 import getRandomPosition from "../util/randomPosition";
 
@@ -13,7 +13,7 @@ const ContainerCSS: React.CSSProperties = {
 
 const NightSkyCSS = {
   zIndex: -2,
-  width: "100vw",
+  width: "100%",
   height: "70%",
   background:
     "linear-gradient(180deg,rgba(9, 9, 121, 1) 0%, rgba(0, 212, 255, 0) 100%)",
