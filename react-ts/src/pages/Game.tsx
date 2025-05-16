@@ -10,6 +10,7 @@ import {
   LocateContext,
 } from "../context/gameContext";
 import Container from "../components/Container";
+import Status from "../components/Status";
 
 const ContainerCSS: React.CSSProperties = {
   display: "flex",
@@ -30,7 +31,6 @@ const CoordinateInit = {
 };
 
 const CounterInit = {
-  mouseDown: false,
   sum: 0,
   id: [],
 };
@@ -47,6 +47,7 @@ function Game() {
     <Container trigger={false}>
       <CounterContext.Provider value={counter}>
         <CounterDispatchContext.Provider value={dispatch}>
+          <Status startTimer={true} point={removeItem.length ?? 0} />
           <LocateContext.Provider value={coordinate}>
             <div style={ContainerCSS}>
               {itemInit.map((r, ri) => {
