@@ -2,7 +2,7 @@ import { RefObject, useState, useEffect } from "react";
 import { MediaSizeType } from "../context/mediaContext";
 import { ScreenSize } from "../util/screenSize";
 
-type MediaSize = {
+export type MediaSize = {
   width: number | null;
   height: number | null;
   type: MediaSizeType | null;
@@ -12,7 +12,7 @@ type UseResizeObserverOptions<T extends HTMLElement = HTMLElement> = {
   ref: RefObject<T | null>;
 };
 
-const initialSize: MediaSize = {
+export const initialSize: MediaSize = {
   width: null,
   height: null,
   type: null,

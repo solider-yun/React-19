@@ -1,7 +1,7 @@
 const ContainerCSS: React.CSSProperties = {
   position: "fixed",
   width: "100vw",
-  height: "10%",
+  height: "60px",
   bottom: 0,
   left: 0,
   zIndex: -1,

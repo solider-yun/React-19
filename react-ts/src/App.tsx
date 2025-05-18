@@ -6,10 +6,10 @@ import { useResizeObserver } from "./hook/useResizeObserverHook";
 
 function App() {
   const ref = useRef<HTMLDivElement>(null);
-  const { type } = useResizeObserver({ ref });
+  const media = useResizeObserver({ ref });
 
   return (
-    <MediaContext.Provider value={type}>
+    <MediaContext.Provider value={media}>
       <div ref={ref}>
         <BrowserRouter>
           <Router />
