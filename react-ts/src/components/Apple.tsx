@@ -39,8 +39,9 @@ export const Apple = ({
   const locatContext = useContext(LocateContext);
   const countDispatch = useCounterDispatch();
 
-  const topX = ref.current?.offsetLeft ?? 0;
-  const topY = ref.current?.offsetTop ?? 0;
+  const clientRec = ref.current?.getBoundingClientRect();
+  const topX = Math.floor(clientRec?.left ?? 0);
+  const topY = Math.floor(clientRec?.top ?? 0);
   const elementRight = topX + 38;
   const elementBottom = topY + 38;
   const startX = locatContext?.startX ?? 0;
