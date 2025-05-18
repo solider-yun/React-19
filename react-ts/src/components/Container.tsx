@@ -6,13 +6,21 @@ const ContainerCSS: React.CSSProperties = {
   width: "100vw",
   height: "100vh",
 };
+const PracticeCSS: React.CSSProperties = {
+  width: "100%",
+  height: "100%",
+};
 
 const Container: React.FC<
-  PropsWithChildren<{ trigger: boolean; type: number | null }>
+  PropsWithChildren<{
+    isPractice?: boolean;
+    trigger: boolean;
+    type: number | null;
+  }>
 > = (params) => {
-  const { trigger, type, children } = params;
+  const { isPractice, trigger, type, children } = params;
   return (
-    <div style={ContainerCSS}>
+    <div style={isPractice ? PracticeCSS : ContainerCSS}>
       {children}
       <Meteor trigger={trigger} />
       <Ground trigger={trigger} />

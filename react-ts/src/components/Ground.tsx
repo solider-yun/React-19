@@ -14,8 +14,6 @@ const GroundCSS: React.CSSProperties = {
 };
 
 const Ground = (param: { trigger: boolean }) => {
-  const { trigger } = param;
-
   return (
     <div style={ContainerCSS}>
       <div style={GroundCSS}></div>

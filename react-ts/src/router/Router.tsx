@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router";
-import Main from "../pages/Main";
+import Main from "../pages/Main/Main";
 import Game from "../pages/Game";
 
 const Router = () => {

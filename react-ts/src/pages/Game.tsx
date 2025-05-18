@@ -1,4 +1,4 @@
-import { useState, useReducer, useEffect } from "react";
+import { useState, useReducer, useEffect, useRef } from "react";
 import { Apple } from "../components/Apple";
 import DragBox from "../components/DragBox";
 import { CoordinateType } from "../context/type";
@@ -14,6 +14,10 @@ import Status from "../components/Status";
 import calculateMaxApples from "../util/calMaxApple";
 import { useMediaContextState } from "../hook/useMediaContext";
 
+interface Props {
+  isPractice?: boolean;
+}
+
 const ContainerCSS: React.CSSProperties = {
   display: "flex",
   flexDirection: "row",
@@ -23,6 +27,15 @@ const ContainerCSS: React.CSSProperties = {
   gap: 2,
   width: "calc(100% - 60px)",
   height: "calc(100% - 156px)",
+};
+
+const PracticeCSS: React.CSSProperties = {
+  display: "grid",
+  justifyItems: "center",
+  alignItems: "center",
+  gridTemplateColumns: "repeat(8,1fr)",
+  width: "400px",
+  height: "400px",
 };
 
 const CoordinateInit = {
@@ -37,7 +50,8 @@ const CounterInit = {
   id: [],
 };
 
-function Game() {
+const Game: React.FC<Props> = (props) => {
+  const { isPractice } = props;
   const media = useMediaContextState();
 
   const [effect, setEffect] = useState<{
@@ -58,29 +72,40 @@ function Game() {
   };
 
   useEffect(() => {
-    if (media) {
-      console.log("media:", media);
+    if (media && !isPractice) {
       const width = media.width ?? 0;
       const height = media.height ?? 0;
       const calMaxApple = calculateMaxApples(width, height);
-      console.log("maxApple:", calMaxApple);
       if (calMaxApple.cols > 0 && !initApple) {
         const init = itemInit({
           cols: calMaxApple.cols,
-          row: calMaxApple.rows,
+          rows: calMaxApple.rows,
         });
         setInitApple(init);
       }
+    } else {
+      setInitApple(
+        itemInit({
+          cols: 8,
+          rows: 8,
+        })
+      );
     }
   }, [media, itemInit, setInitApple, calculateMaxApples]);
 
   return (
-    <Container trigger={effect.trigger} type={effect.type}>
+    <Container
+      trigger={effect.trigger}
+      type={effect.type}
+      isPractice={isPractice}
+    >
       <CounterContext.Provider value={counter}>
         <CounterDispatchContext.Provider value={dispatch}>
-          <Status startTimer={true} point={removeItem.length ?? 0} />
+          {!isPractice && (
+            <Status startTimer={true} point={removeItem.length ?? 0} />
+          )}
           <LocateContext.Provider value={coordinate}>
-            <div style={ContainerCSS}>
+            <div style={isPractice ? PracticeCSS : ContainerCSS}>
               {initApple &&
                 initApple.map((r, ri) => {
                   return r.map((c, ci) => {
@@ -107,6 +132,6 @@ function Game() {
       </CounterContext.Provider>
     </Container>
   );
-}
+};
 
 export default Game;

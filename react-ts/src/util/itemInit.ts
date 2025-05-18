@@ -4,6 +4,7 @@ function getWeightedRandom() {
   return weighted[index];
 }
 
-export const itemInit = ({cols,row}:{cols:number, row:number}) => Array.from({ length: row }, () =>
-  Array.from({ length: cols }, () => getWeightedRandom())
-);
+export const itemInit = ({ cols, rows }: { cols: number; rows: number }) =>
+  Array.from({ length: rows }, () =>
+    Array.from({ length: cols }, () => getWeightedRandom())
+  );

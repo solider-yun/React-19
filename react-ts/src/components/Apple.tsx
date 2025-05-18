@@ -19,10 +19,11 @@ const TextStyleCSS: React.CSSProperties = {
   width: "30px",
   height: "30px",
   padding: "4px",
-  fontSize: 22,
+  fontSize: 18,
   fontWeight: 700,
   textAlign: "center",
   userSelect: "none",
+  lineHeight: "34px",
 };
 
 export const Apple = ({
@@ -37,7 +38,7 @@ export const Apple = ({
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const locatContext = useContext(LocateContext);
-  const countDispatch = useCounterDispatch();
+  const counterDispatch = useCounterDispatch();
 
   const clientRec = ref.current?.getBoundingClientRect();
   const topX = Math.floor(clientRec?.left ?? 0);
@@ -64,18 +65,18 @@ export const Apple = ({
   useEffect(() => {
     if (show) {
       if (isHovered) {
-        countDispatch({
+        counterDispatch({
           type: ActionType.ADD_ITEM,
           payload: { item: text, id },
         });
       } else {
-        countDispatch({
+        counterDispatch({
           type: ActionType.DEL_ITEM,
           payload: { item: text, id },
         });
       }
     }
-  }, [show, isHovered, countDispatch]);
+  }, [show, isHovered, counterDispatch]);
 
   return (
     <div ref={ref} style={appleCssObj} {...rest}>
