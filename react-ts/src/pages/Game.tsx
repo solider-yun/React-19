@@ -59,10 +59,12 @@ function Game() {
 
   useEffect(() => {
     if (media) {
+      console.log("media:", media);
       const width = media.width ?? 0;
       const height = media.height ?? 0;
       const calMaxApple = calculateMaxApples(width, height);
-      if (calMaxApple.cols > 0) {
+      console.log("maxApple:", calMaxApple);
+      if (calMaxApple.cols > 0 && !initApple) {
         const init = itemInit({
           cols: calMaxApple.cols,
           row: calMaxApple.rows,
