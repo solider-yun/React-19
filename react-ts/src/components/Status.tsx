@@ -54,7 +54,9 @@ const Status: React.FC<StatusProps> = (props) => {
             transition: "all 0.3s",
           }}
         >
-          <span style={{ fontWeight: 700, fontSize: "18px" }}>
+          <span
+            style={{ fontWeight: 700, fontSize: "18px", whiteSpace: "nowrap" }}
+          >
             {isZero ? "Time Over" : 100 - seconds}
           </span>
         </div>

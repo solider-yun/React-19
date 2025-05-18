@@ -7,8 +7,10 @@ const ContainerCSS: React.CSSProperties = {
   height: "100vh",
 };
 
-const Container: React.FC<PropsWithChildren<{ trigger: boolean }>> = (params) => {
-  const { trigger, children } = params;
+const Container: React.FC<
+  PropsWithChildren<{ trigger: boolean; type: number | null }>
+> = (params) => {
+  const { trigger, type, children } = params;
   return (
     <div style={ContainerCSS}>
       {children}

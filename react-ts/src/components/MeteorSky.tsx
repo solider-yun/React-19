@@ -12,7 +12,7 @@ const ContainerCSS: React.CSSProperties = {
 };
 
 const NightSkyCSS = {
-  zIndex: -2,
+  zIndex: -5,
   width: "100%",
   height: "70%",
   background:
@@ -23,7 +23,6 @@ const NightSkyCSS = {
 const MeteorBallCSS: React.CSSProperties = {
   display: "block",
   position: "fixed",
-  zIndex: -3,
   width: "90px",
   height: "90px",
   backgroundImage: `url(${MeteorApple})`,
@@ -45,27 +44,27 @@ const MeteorSky = (param: { trigger: boolean }) => {
       setRun(true);
       const timeOutId = setTimeout(() => {
         setRun(false);
-      }, 3500);
+      }, 4000);
       return () => clearTimeout(timeOutId);
     }
   }, [trigger, setRun]);
 
   return (
     <div style={ContainerCSS}>
-      <div style={{ ...NightSkyCSS, opacity: run ? 1 : 0 }}></div>
       {points.map((v, idx) => {
         return (
           <div
             key={idx}
             style={{
               ...MeteorBallCSS,
-              transition: run ? "all 6s" : "none",
+              transition: run ? "all 8s" : "none",
               top: run ? `calc(100% + ${v.x}px)` : `-${v.x}px`,
               right: run ? `calc(100% + ${v.y}px)` : `-${v.y}px`,
             }}
           ></div>
         );
       })}
+      <div style={{ ...NightSkyCSS, opacity: run ? 1 : 0 }}></div>
     </div>
   );
 };

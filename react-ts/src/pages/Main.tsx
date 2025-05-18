@@ -1,6 +1,4 @@
 import { useState } from "react";
-import Meteor from "../components/MeteorSky";
-import Ground from "../components/Ground";
 import Container from "../components/Container";
 import Typography from "../components/Typography";
 import Button from "../components/Button";
@@ -9,7 +7,7 @@ const Main = () => {
   const [run, setRun] = useState(false);
 
   return (
-    <Container trigger={run}>
+    <Container trigger={run} type={null}>
       <div
         style={{
           width: "100%",

@@ -30,10 +30,11 @@ interface DragBoxProps {
     value: CounterType;
     dispatch: React.ActionDispatch<[action: Action]>;
   };
+  meteor: (point: number) => void;
 }
 
 const DragBox: React.FC<DragBoxProps> = (props) => {
-  const { removeSt, coordinateSt, counterRe } = props;
+  const { removeSt, coordinateSt, counterRe, meteor } = props;
 
   const startX = coordinateSt.value?.startX ?? 0;
   const startY = coordinateSt.value?.startY ?? 0;
@@ -67,6 +68,8 @@ const DragBox: React.FC<DragBoxProps> = (props) => {
     coordinateSt.setState({ startX: 0, startY: 0, dragX: 0, dragY: 0 });
     if (counterRe.value.sum === 10) {
       removeSt.setState((prev) => [...prev, ...counterRe.value.id]);
+      const counterReLng = counterRe.value.id.length;
+      if (counterReLng > 2) meteor(counterReLng);
     }
   };
 
