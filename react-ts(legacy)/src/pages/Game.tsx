@@ -1,18 +1,19 @@
 import { useState, useReducer, useEffect, useRef } from "react";
 import { Apple } from "../components/Apple";
 import DragBox from "../components/DragBox";
-import { CoordinateType } from "../context/type";
+import { DragBoxContextType } from "../context/type";
 import { counterReducer } from "../reducer/counterReducer";
 import { itemInit } from "../util/itemInit";
 import {
   CounterContext,
   CounterDispatchContext,
-  LocateContext,
+  DragAreaContext,
 } from "../context/gameContext";
 import Container from "../components/Container";
 import Status from "../components/Status";
 import calculateMaxApples from "../util/calMaxApple";
 import { useMediaContextState } from "../hook/useMediaContext";
+import { throttle } from "lodash";
 
 interface Props {
   isPractice?: boolean;
@@ -53,24 +54,46 @@ const CounterInit = {
 const Game: React.FC<Props> = (props) => {
   const { isPractice } = props;
   const media = useMediaContextState();
+  const [coordinate, setCoordinate] =
+    useState<DragBoxContextType>(CoordinateInit);
 
   const [effect, setEffect] = useState<{
     trigger: boolean;
     type: number | null;
   }>({ trigger: false, type: null });
   const [initApple, setInitApple] = useState<number[][] | null>(null);
-
-  const [coordinate, setCoordinate] = useState<CoordinateType>(CoordinateInit);
   const [removeItem, setRemoveItem] = useState<string[]>([]);
   const [counter, dispatch] = useReducer(counterReducer, CounterInit);
-  const counterRe = { value: counter, dispatch: dispatch };
-  const removeSt = { value: removeItem, setState: setRemoveItem };
-  const coordinateSt = { value: coordinate, setState: setCoordinate };
 
-  const handleMeteor = (point: number) => {
-    setEffect({ trigger: !effect.trigger, type: point });
-  };
+  const onDragAreaChange = throttle(
+    (
+      props: null | {
+        top: number;
+        left: number;
+        width: number;
+        height: number;
+      }
+    ) => {
+      if (props) {
+        setCoordinate({
+          startX: props.left,
+          startY: props.top,
+          dragX: props.left + props.width,
+          dragY: props.top + props.height,
+        });
+        console.log(props);
+      } else {
+        setCoordinate(CoordinateInit);
+      }
+    },
+    100
+  );
 
+  // const handleMeteor = (point: number) => {
+  //   setEffect({ trigger: !effect.trigger, type: point });
+  // };
+
+  //for practice page
   useEffect(() => {
     if (media && !isPractice) {
       const width = media.width ?? 0;
@@ -104,7 +127,7 @@ const Game: React.FC<Props> = (props) => {
           {!isPractice && (
             <Status startTimer={true} point={removeItem.length ?? 0} />
           )}
-          <LocateContext.Provider value={coordinate}>
+          <DragAreaContext.Provider value={coordinate}>
             <div style={isPractice ? PracticeCSS : ContainerCSS}>
               {initApple &&
                 initApple.map((r, ri) => {
@@ -113,21 +136,17 @@ const Game: React.FC<Props> = (props) => {
                     return (
                       <Apple
                         key={`${ri}_${ci}`}
+                        dragBoxArea={coordinate}
                         id={`${ri}_${ci}`}
                         show={isShow}
-                        text={c}
+                        num={c}
                       />
                     );
                   });
                 })}
             </div>
-            <DragBox
-              removeSt={removeSt}
-              coordinateSt={coordinateSt}
-              counterRe={counterRe}
-              meteor={handleMeteor}
-            />
-          </LocateContext.Provider>
+            <DragBox onDragAreaChange={onDragAreaChange} />
+          </DragAreaContext.Provider>
         </CounterDispatchContext.Provider>
       </CounterContext.Provider>
     </Container>

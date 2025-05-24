@@ -14,7 +14,7 @@ export type Action =
   | { type: ActionType.DEL_ITEM; payload: { item: number; id: string } }
   | { type: ActionType.RESET };
 
-export interface CoordinateType {
+export interface DragBoxContextType {
   startX: number;
   startY: number;
   dragX: number;

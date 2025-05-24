@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Action, CoordinateType, CounterType } from "../context/type";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import React from "react";
+import { DragBoxRefContext } from "../context/DragBoxContext";
 const DragBoxCSS: React.CSSProperties = {
   position: "absolute",
   width: "10px",
@@ -10,43 +10,43 @@ const DragBoxCSS: React.CSSProperties = {
   opacity: 0.6,
 };
 
-type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
-
 interface DragBoxProps {
-  removeSt: {
-    value: string[];
-    setState: SetState<string[]>;
-  };
-  coordinateSt: {
-    value: CoordinateType;
-    setState: SetState<CoordinateType>;
-  };
-  counterRe: {
-    value: CounterType;
-    dispatch: React.ActionDispatch<[action: Action]>;
-  };
-  meteor: (point: number) => void;
+  onDragAreaChange: (
+    props: null | {
+      top: number;
+      left: number;
+      width: number;
+      height: number;
+    }
+  ) => void;
 }
 
 interface CoordStateInf {
   stX: number;
   stY: number;
-  curX: number;
-  curY: number;
 }
 
 const initCoord = {
   stX: 0,
   stY: 0,
-  curX: 0,
-  curY: 0,
 };
 
 const DragBox: React.FC<DragBoxProps> = (props) => {
+  const { onDragAreaChange } = props;
   const dragBoxRef = useRef<HTMLDivElement>(null);
   const [coord, setCoord] = useState<CoordStateInf>(initCoord);
+  const dragStateRef = useContext(DragBoxRefContext);
 
   const MouseDownEventHandler = (ev: MouseEvent) => {
+    dragStateRef.current.coordinates = {
+      startX: ev.pageX,
+      startY: ev.pageY,
+      dragX: ev.pageX,
+      dragY: ev.pageY,
+    };
+    dragStateRef.current.dragArea = null;
+    dragStateRef.current.subscribers.forEach((cb) => cb());
+
     if (dragBoxRef.current) {
       const dragBoxStyle = dragBoxRef.current.style;
       dragBoxStyle.display = "block";
@@ -56,6 +56,7 @@ const DragBox: React.FC<DragBoxProps> = (props) => {
       dragBoxStyle.height = "0px";
       setCoord((x) => ({ ...x, stX: ev.pageX, stY: ev.pageY }));
     }
+    // onDragAreaChange(null);
   };
 
   const MouseDragEventHandler = useCallback(
@@ -74,10 +75,21 @@ const DragBox: React.FC<DragBoxProps> = (props) => {
           dragBoxStyle.top = `${top}px`;
           dragBoxStyle.width = `${width}px`;
           dragBoxStyle.height = `${height}px`;
+          // onDragAreaChange({ left, top, width, height });
+          dragStateRef.current.coordinates = {
+            startX: left,
+            startY: top,
+            dragX: left + width,
+            dragY: top + height,
+          };
+          dragStateRef.current.dragArea = { left, top, width, height };
+
+          // 3. Ref 구독자들에게 변경 알림 (사과 컴포넌트 등의 업데이트 트리거)
+          dragStateRef.current.subscribers.forEach((cb) => cb());
         }
       }
     },
-    [dragBoxRef, coord]
+    [dragBoxRef, coord, dragStateRef]
   );
 
   const MouseUpEventHandler = () => {
@@ -86,6 +98,15 @@ const DragBox: React.FC<DragBoxProps> = (props) => {
       dragBoxRef.current.style.width = "0px";
       dragBoxRef.current.style.height = "0px";
     }
+    // onDragAreaChange(null);
+    dragStateRef.current.coordinates = {
+      startX: 0,
+      startY: 0,
+      dragX: 0,
+      dragY: 0,
+    };
+    dragStateRef.current.dragArea = null; // 드래그 영역 초기화
+    dragStateRef.current.subscribers.forEach((cb) => cb()); // 구독자들에게 초기화 알림
 
     setCoord(initCoord);
   };
@@ -107,52 +128,9 @@ const DragBox: React.FC<DragBoxProps> = (props) => {
       ref={dragBoxRef}
       style={{
         ...DragBoxCSS,
-        // left: startX,
-        // top: startY,
-        // width: widthCul,
-        // height: heightCul,
       }}
     ></div>
   );
 };
 
 export default DragBox;
-
-// const { removeSt, coordinateSt, counterRe, meteor } = props;
-
-// const startX = coordinateSt.value?.startX ?? 0;
-// const startY = coordinateSt.value?.startY ?? 0;
-// const dragX = coordinateSt.value?.dragX ?? 0;
-// const dragY = coordinateSt.value?.dragY ?? 0;
-
-// const widthCul = dragX !== 0 && dragX > startX ? Math.abs(startX - dragX) : 0;
-// const heightCul =
-//   dragY !== 0 && dragY > startY ? Math.abs(startY - dragY) : 0;
-
-// const MouseDownEventHandler = (ev: MouseEvent) => {
-//   counterRe.dispatch({ type: ActionType.RESET });
-//   coordinateSt.setState((prev) => ({
-//     ...prev,
-//     startX: ev.pageX,
-//     startY: ev.pageY,
-//   }));
-// };
-
-// const MouseDragEventHandler = (ev: MouseEvent) => {
-//   if (startX && startX !== 0 && startY && startY !== 0) {
-//     coordinateSt.setState((prev) => ({
-//       ...prev,
-//       dragX: ev.pageX,
-//       dragY: ev.pageY,
-//     }));
-//   }
-// };
-
-// const MouseUpEventHandler = () => {
-//   coordinateSt.setState({ startX: 0, startY: 0, dragX: 0, dragY: 0 });
-//   if (counterRe.value.sum === 10) {
-//     removeSt.setState((prev) => [...prev, ...counterRe.value.id]);
-//     const counterReLng = counterRe.value.id.length;
-//     if (counterReLng > 2) meteor(counterReLng);
-//   }
-// };
